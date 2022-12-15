@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    border: 3px solid red;
+    height: 100%;
+}
+
+body {
+    border: 3px solid blue;
+    height: 100%;
+    margin: 0;
+}
+
+#root {
+    border: 3px solid green;
+    height: 100%;
+}
+
+.App {
+    height: 100%;
+}
+
+p {
+    margin: 0;
+}
