@@ -64,7 +64,6 @@ export function GamePage() {
     const handleStateGame = (): void => {
         setShowStartGameButton(false);
         const card: ICard = getCard(cards);
-        console.log(card);
         dispatch(addToDeck(card));
     };
 
