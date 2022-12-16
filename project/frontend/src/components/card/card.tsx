@@ -1,8 +1,8 @@
-import {CardCompInterface} from "../../interfaces/card";
+import {ICardCompInterface} from "../../interfaces/ICard";
 import {CardStyle, CardStyleHoriz} from "./cardStyle";
 import {useDeliverCard} from "../../store/features/hooks/useDeliverCard";
 
-export function CardComponent({card, src, alt, playerIndex}:CardCompInterface) {
+export function CardComponent({card, src, alt, playerIndex}:ICardCompInterface) {
     const {fromPlayerToDeck, fromDeckToPlayer} = useDeliverCard();
 
     const handleClick = () => {

@@ -1,5 +1,5 @@
-import {Card} from "./card";
+import {ICard} from "./ICard";
 
 export interface Table {
-    lastThrow: [Card];
+    lastThrow: [ICard];
 }

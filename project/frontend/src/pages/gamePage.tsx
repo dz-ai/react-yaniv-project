@@ -7,8 +7,8 @@ import {GamePageContainer, MainGameContainer, UpAndDownPlayersCont, SideCont, De
 import {useAppDispatch, useAppSelector} from "../store/features/hooks/reduxHooks";
 import {addToDeck} from "../store/features/gameSlice";
 import {initPlayers} from "../store/features/playersSlice";
-import {Card} from "../interfaces/card";
-import {IPlayer} from "../interfaces/player";
+import {ICard} from "../interfaces/ICard";
+import {IPlayer} from "../interfaces/IPlayer";
 
 export function GamePage() {
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ export function GamePage() {
 
     const handleStateGame = (): void => {
         setShowStartGameButton(false);
-        const card: Card = getCard(cards);
+        const card: ICard = getCard(cards);
         console.log(card);
         dispatch(addToDeck(card));
     };

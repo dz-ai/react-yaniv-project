@@ -1,13 +1,13 @@
-import {Card} from "../../interfaces/card";
-import {PlayerComponent} from "../../interfaces/player";
+import {ICard} from "../../interfaces/ICard";
+import {IPlayerComponent} from "../../interfaces/IPlayer";
 import {CardComponent} from "../card/card";
 
-export function Player({player, isYou, playerIndex}: PlayerComponent) {
+export function Player({player, isYou, playerIndex}: IPlayerComponent) {
     return (
         <>
             <p>{player.playerName}</p>
             {
-                player.playerCards.map((card: Card, index: number) =>
+                player.playerCards.map((card: ICard, index: number) =>
                     isYou
                         ?
 

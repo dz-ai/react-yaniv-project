@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Card} from "../../interfaces/card";
-import {IPlayer} from "../../interfaces/player";
+import {ICard} from "../../interfaces/ICard";
+import {IPlayer} from "../../interfaces/IPlayer";
 
 interface playerSliceState extends IPlayer {
     cardOut: unknown;
@@ -30,7 +30,7 @@ const playersSlice = createSlice({
                state.playerScore = playerScore;
            }
        },
-        takeFromPlayerCard: (state, action:PayloadAction<Card>) => {
+        takeFromPlayerCard: (state, action:PayloadAction<ICard>) => {
            const card = action.payload;
             console.log(card)
             state.playerCards = [...state.playerCards]
@@ -40,7 +40,7 @@ const playersSlice = createSlice({
                     }
                 });
         },
-        addToPlayer: (state, action:PayloadAction<Card>) => {
+        addToPlayer: (state, action:PayloadAction<ICard>) => {
             console.log('addToPlayer' , action.payload)
             state.playerCards.push(action.payload);
         },

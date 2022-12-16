@@ -1,10 +1,10 @@
-export interface Card {
+export interface ICard {
     symbol: string;
     num: number | string;
 }
 
-export interface CardCompInterface {
-    card:Card;
+export interface ICardCompInterface {
+    card:ICard;
     src:string;
     alt:string;
     playerIndex :number;

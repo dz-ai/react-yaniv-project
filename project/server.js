@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+require('dotenv').config();
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.get('/names', async (req, res) => {
     axios.get('https://api.api-ninjas.com/v1/babynames?popular_only=true',
         {
             headers: {
-                'X-Api-Key': 'DXpeMKzGL2Bg7Vj0Vfvt9A==l4ruPimACsXlHwYx'
+                'X-Api-Key': process.env.API_KEY,
             }
         }
     )

@@ -1,13 +1,13 @@
 import {AppDispatch} from "../../store";
-import {Card} from "../../../interfaces/card";
+import {ICard} from "../../../interfaces/ICard";
 import {useAppDispatch} from "./reduxHooks";
 import {addToPlayer, takeFromPlayerCard} from "../playersSlice";
 import {addToDeck, takeFromDeck} from "../gameSlice";
 import {useState} from "react";
 
 interface IDeliverFun {
-    fromPlayerToDeck:(card:Card) => AppDispatch;
-    fromDeckToPlayer:(card:Card) => AppDispatch;
+    fromPlayerToDeck:(card:ICard) => AppDispatch;
+    fromDeckToPlayer:(card:ICard) => AppDispatch;
 }
 
 export function useDeliverCard():IDeliverFun {
