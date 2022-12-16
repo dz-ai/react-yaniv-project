@@ -4,7 +4,7 @@ interface Props {
     playerIndex: number;
 }
 
-export const CardStyle = styled.img<Props>`
+export const CardStyleHover = styled.img<Props>`
   margin: 5px;
   width: 100px;
   height: auto;
@@ -13,6 +13,12 @@ export const CardStyle = styled.img<Props>`
     border-radius: ${props =>  props.playerIndex === 0 || props.playerIndex > 4 ? '7px' : null};
     cursor: ${props =>  props.playerIndex === 0 || props.playerIndex > 4 ? 'pointer' : null};
   }
+`;
+
+export const CardStyle = styled.img<Props>`
+  margin: 5px;
+  width: 100px;
+  height: auto;
 `;
 
 export const CardStyleHoriz = styled.img`

@@ -25,7 +25,7 @@ const playersSlice = createSlice({
 
                state.playerId = playerId;
                state.playerName = playerName;
-               state.isYourTurn = isYourTurn;
+               state.isYourTurn = true;
                state.playerCards = playerCards;
                state.playerScore = playerScore;
            }

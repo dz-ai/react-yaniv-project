@@ -4,6 +4,7 @@ export interface ICard {
 }
 
 export interface ICardCompInterface {
+    isYourTurn:boolean;
     card:ICard;
     src:string;
     alt:string;

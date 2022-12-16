@@ -21,8 +21,10 @@ export function GamePage() {
     const dispatch = useAppDispatch();
     const whoIsTurnFun = useWhoIsTurn();
 
-    const {gameState} = useGameStateIndex();
+    const {gameState, gameStateFun} = useGameStateIndex();
     const {whoIsTurn} = gameState;
+    const {startGame, addToDeck} = gameStateFun;
+
     const currentPlayer = useAppSelector(state => state.playersSlice);
     const deck = useAppSelector(state => state.gameSlice.deck);
 
@@ -33,10 +35,17 @@ export function GamePage() {
     const [showStartGameButton, setShowStartGameButton] = useState(true);
 
     const handleTurn = useCallback(() => {
-                whoIsTurnFun(playersList.length, isFirstRound);
-                isFirstRound && setIsFirstRound(false);
-            }
-        ,[gameState.whoIsTurn, isFirstRound, playersList.length]);
+            setPlayersList((prevPlayersList) => {
+                prevPlayersList[whoIsTurn] = {
+                    ...prevPlayersList[whoIsTurn],
+                    isYourTurn: false,
+                };
+                return [...prevPlayersList];
+            });
+            whoIsTurnFun(playersList.length, isFirstRound);
+            isFirstRound && setIsFirstRound(false);
+        }
+        , [whoIsTurn, isFirstRound, playersList.length]);
 
     useEffect(() => {
         whoIsTurnFun(numOfPlayers, isFirstRound);
@@ -53,18 +62,20 @@ export function GamePage() {
     }, [currentPlayer, players]);
 
     useEffect(() => {
-        dispatch(initPlayers(playersList[whoIsTurn]));
-    }, [playersList, whoIsTurn]);
+            dispatch(initPlayers(playersList[whoIsTurn]));
+        },
+        [playersList, whoIsTurn]);
 
     useEffect(() => {
         playersList[whoIsTurn] = currentPlayer;
         setPlayersList([...playersList]);
     }, [currentPlayer]);
 
-    const handleStateGame = (): void => {
+    const handleStartGame = (): void => {
         setShowStartGameButton(false);
         const card: ICard = getCard(cards);
-        dispatch(addToDeck(card));
+        startGame();
+        addToDeck(card);
     };
 
     return (
@@ -78,19 +89,20 @@ export function GamePage() {
 
             <MainGameContainer style={{border: '3px solid gray'}}>
                 <SideCont style={{border: '3px solid blue'}}>
-                    {playersList[1] &&  <Player player={playersList[1]} isYou={false} playerIndex={1}/>}
+                    {playersList[1] && <Player player={playersList[1]} isYou={false} playerIndex={1}/>}
                 </SideCont>
 
                 <UpAndDownPlayersCont style={{border: '3px solid purple'}}>
                     <div style={{border: '3px solid red'}}>
                         {playersList[2] && <Player player={playersList[2]} isYou={false} playerIndex={2}/>}
                     </div>
-                    {/* TODO make it to separate component*/}
+                    {/* TODO make it to a separate component*/}
                     <Deck>
-                        {showStartGameButton && <button onClick={handleStateGame}>Start Game</button>}
+                        {showStartGameButton && <button onClick={handleStartGame}>Start Game</button>}
                         {!showStartGameButton &&
                             deck.map(card =>
                                 <CardComponent
+                                    isYourTurn={whoIsTurn === 0}
                                     card={card}
                                     key={`${card.num}${card.symbol}`}
                                     src={`../../cardsImages/${card.symbol}/${card.num}.png`}
