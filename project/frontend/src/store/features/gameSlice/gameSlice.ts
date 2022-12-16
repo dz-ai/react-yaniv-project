@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ICard} from "../../interfaces/ICard";
+import {ICard} from "../../../interfaces/ICard";
 
 interface GameState {
     deck: ICard[];
@@ -24,10 +24,13 @@ const gameSlice = createSlice({
               return cardFilter.num !== card.num || cardFilter.symbol !== card.symbol;
           })
         },
+        turnChange: (state,action:PayloadAction<number>) => {
+           state.whoIsTurn = action.payload;
+        },
     },
 });
 
-export const {addToDeck, takeFromDeck} = gameSlice.actions;
+export const {addToDeck, takeFromDeck, turnChange} = gameSlice.actions;
 
 export default gameSlice.reducer;
 
