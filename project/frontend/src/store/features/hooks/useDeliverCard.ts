@@ -1,8 +1,8 @@
 import {AppDispatch} from "../../store";
 import {ICard} from "../../../interfaces/ICard";
 import {useAppDispatch} from "./reduxHooks";
-import {addToPlayer, takeFromPlayerCard} from "../playersSlice";
-import {addToDeck, takeFromDeck} from "../gameSlice";
+import {addToPlayer, takeFromPlayerCard} from "../playersSlice/playersSlice";
+import {addToDeck, takeFromDeck} from "../gameSlice/gameSlice";
 import {useState} from "react";
 
 interface IDeliverFun {

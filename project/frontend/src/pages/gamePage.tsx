@@ -1,14 +1,16 @@
 import {getCard, usePlayersCards} from "../hooks/usePlayersCards";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Player} from "../components/player/player";
 import {CardComponent} from "../components/card/card";
 import {GamePageContainer, MainGameContainer, UpAndDownPlayersCont, SideCont, Deck} from "./gamePageStyle";
 import {useAppDispatch, useAppSelector} from "../store/features/hooks/reduxHooks";
-import {addToDeck} from "../store/features/gameSlice";
-import {initPlayers} from "../store/features/playersSlice";
+import {addToDeck} from "../store/features/gameSlice/gameSlice";
+import {initPlayers} from "../store/features/playersSlice/playersSlice";
 import {ICard} from "../interfaces/ICard";
 import {IPlayer} from "../interfaces/IPlayer";
+import {useGameStateIndex} from "../store/features/gameSlice/useGameStateIndex";
+import {useWhoIsTurn} from "../store/features/gameSlice/useWhoIsTurn";
 
 export function GamePage() {
     const navigate = useNavigate();
@@ -17,23 +19,45 @@ export function GamePage() {
     const numOfPlayers = location.state.numOfPlayers
 
     const dispatch = useAppDispatch();
+    const whoIsTurnFun = useWhoIsTurn();
+
+    const {gameState} = useGameStateIndex();
+    const {whoIsTurn} = gameState;
     const currentPlayer = useAppSelector(state => state.playersSlice);
     const deck = useAppSelector(state => state.gameSlice.deck);
 
     const {players, cards} = usePlayersCards(yourName, numOfPlayers);
+
+    const [isFirstRound, setIsFirstRound] = useState(true);
     const [playersList, setPlayersList] = useState<IPlayer[]>([]);
     const [showStartGameButton, setShowStartGameButton] = useState(true);
+
+    const handleTurn = useCallback(() => {
+                whoIsTurnFun(playersList.length, isFirstRound);
+                isFirstRound && setIsFirstRound(false);
+            }
+        ,[gameState.whoIsTurn, isFirstRound, playersList.length]);
+
+    useEffect(() => {
+        whoIsTurnFun(numOfPlayers, isFirstRound);
+        isFirstRound && setIsFirstRound(false);
+    }, []);
+
+    useEffect(() => {
+        console.log(whoIsTurn);
+        console.log(currentPlayer);
+    }, [whoIsTurn, currentPlayer]);
 
     useEffect(() => {
         setPlayersList(players);
     }, [currentPlayer, players]);
 
     useEffect(() => {
-        dispatch(initPlayers(playersList[0]));
-    }, [playersList]);
+        dispatch(initPlayers(playersList[whoIsTurn]));
+    }, [playersList, whoIsTurn]);
 
     useEffect(() => {
-        playersList[0] = currentPlayer;
+        playersList[whoIsTurn] = currentPlayer;
         setPlayersList([...playersList]);
     }, [currentPlayer]);
 
@@ -50,6 +74,7 @@ export function GamePage() {
             <header style={{border: '3px solid gray'}}>
                 Game
                 <button onClick={() => navigate(-1)}>Reset Game</button>
+                <button onClick={handleTurn}>turn</button>
             </header>
 
             <MainGameContainer style={{border: '3px solid gray'}}>
@@ -61,7 +86,7 @@ export function GamePage() {
                     <div style={{border: '3px solid red'}}>
                         {playersList[2] && <Player player={playersList[2]} isYou={false} playerIndex={2}/>}
                     </div>
-
+                    {/* TODO make it to separate component*/}
                     <Deck>
                         {showStartGameButton && <button onClick={handleStateGame}>Start Game</button>}
                         {!showStartGameButton &&

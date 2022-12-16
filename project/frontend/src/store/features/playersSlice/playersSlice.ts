@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {ICard} from "../../interfaces/ICard";
-import {IPlayer} from "../../interfaces/IPlayer";
+import {ICard} from "../../../interfaces/ICard";
+import {IPlayer} from "../../../interfaces/IPlayer";
 
 interface playerSliceState extends IPlayer {
     cardOut: unknown;
