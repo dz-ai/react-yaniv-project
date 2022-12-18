@@ -22,11 +22,10 @@ export function GamePage() {
     const whoIsTurnFun = useWhoIsTurn();
 
     const {gameState, gameStateFun} = useGameStateIndex();
-    const {whoIsTurn} = gameState;
+    const {whoIsTurn, deck} = gameState;
     const {startGame, addToDeck} = gameStateFun;
 
     const currentPlayer = useAppSelector(state => state.playersSlice);
-    const deck = useAppSelector(state => state.gameSlice.deck);
 
     const {players, cards} = usePlayersCards(yourName, numOfPlayers);
 
@@ -81,19 +80,19 @@ export function GamePage() {
     return (
         <GamePageContainer>
 
-            <header style={{border: '3px solid gray'}}>
+            <header>
                 Game
                 <button onClick={() => navigate(-1)}>Reset Game</button>
                 <button onClick={handleTurn}>turn</button>
             </header>
 
-            <MainGameContainer style={{border: '3px solid gray'}}>
-                <SideCont style={{border: '3px solid blue'}}>
+            <MainGameContainer>
+                <SideCont>
                     {playersList[1] && <Player player={playersList[1]} isYou={false} playerIndex={1}/>}
                 </SideCont>
 
-                <UpAndDownPlayersCont style={{border: '3px solid purple'}}>
-                    <div style={{border: '3px solid red'}}>
+                <UpAndDownPlayersCont>
+                    <div>
                         {playersList[2] && <Player player={playersList[2]} isYou={false} playerIndex={2}/>}
                     </div>
                     {/* TODO make it to a separate component*/}
@@ -111,12 +110,12 @@ export function GamePage() {
                         }
                     </Deck>
 
-                    <div style={{border: '3px solid red'}}>
+                    <div>
                         {playersList[0] && <Player player={playersList[0]} isYou={true} playerIndex={0}/>}
                     </div>
                 </UpAndDownPlayersCont>
 
-                <SideCont style={{border: '3px solid blue'}}>
+                <SideCont>
                     {playersList[3] && <Player player={playersList[3]} isYou={false} playerIndex={3}/>}
                 </SideCont>
             </MainGameContainer>

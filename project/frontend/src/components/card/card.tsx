@@ -29,7 +29,6 @@ export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCo
         } else {
             return <CardStyle
                 playerIndex={playerIndex}
-                onClick={handleClick}
                 src={src}
                 alt={alt}/>;
         }
