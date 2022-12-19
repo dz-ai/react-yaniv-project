@@ -16,22 +16,22 @@ const initialState: playerSliceState = {
 }
 
 const playersSlice = createSlice({
-   name: 'players',
-   initialState,
+    name: 'players',
+    initialState,
     reducers: {
-       initPlayers: (state, action:PayloadAction<IPlayer>) => {
-           if (action.payload) {
-            const {playerId, playerName, isYourTurn, playerCards, playerScore} = action.payload;
+        initPlayers: (state, action: PayloadAction<IPlayer>) => {
+            if (action.payload) {
+                const {playerId, playerName, isYourTurn, playerCards, playerScore} = action.payload;
 
-               state.playerId = playerId;
-               state.playerName = playerName;
-               state.isYourTurn = true;
-               state.playerCards = playerCards;
-               state.playerScore = playerScore;
-           }
-       },
-        takeFromPlayerCard: (state, action:PayloadAction<ICard>) => {
-           const card = action.payload;
+                state.playerId = playerId;
+                state.playerName = playerName;
+                state.isYourTurn = true;
+                state.playerCards = playerCards;
+                state.playerScore = playerScore;
+            }
+        },
+        takeFromPlayerCard: (state, action: PayloadAction<ICard>) => {
+            const card = action.payload;
             console.log(card)
             state.playerCards = [...state.playerCards]
                 .filter(cardFilter => {
@@ -40,12 +40,26 @@ const playersSlice = createSlice({
                     }
                 });
         },
-        addToPlayer: (state, action:PayloadAction<ICard>) => {
-            console.log('addToPlayer' , action.payload)
+        addToPlayer: (state, action: PayloadAction<ICard>) => {
+            console.log('addToPlayer', action.payload)
             state.playerCards.push(action.payload);
+        },
+        changeCardRule: (state, action: PayloadAction<ICard[]>) => {
+
+            const inArr = action.payload;
+
+            return {
+                ...state,
+                playerCards: inArr,
+            };
+
         },
     },
 });
 
-export const {initPlayers, takeFromPlayerCard, addToPlayer} = playersSlice.actions;
+export const {initPlayers, takeFromPlayerCard, addToPlayer, changeCardRule} = playersSlice.actions;
 export default playersSlice.reducer;
+
+const arr = [{a: 1}, {a: 2}, {a: 3}];
+
+arr.forEach(num => num.a + 2);

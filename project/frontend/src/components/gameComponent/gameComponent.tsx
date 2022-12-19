@@ -1,37 +1,48 @@
-import {getCard, usePlayersCards} from "../hooks/usePlayersCards";
+import {getCard, usePlayersCards} from "../../hooks/usePlayersCards";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
-import {Player} from "../components/player/player";
-import {CardComponent} from "../components/card/card";
+import {Player} from "../player/player";
+import {CardComponent} from "../card/card";
 import {GamePageContainer, MainGameContainer, UpAndDownPlayersCont, SideCont, Deck} from "./gamePageStyle";
-import {useAppDispatch, useAppSelector} from "../store/features/hooks/reduxHooks";
-import {addToDeck} from "../store/features/gameSlice/gameSlice";
-import {initPlayers} from "../store/features/playersSlice/playersSlice";
-import {ICard} from "../interfaces/ICard";
-import {IPlayer} from "../interfaces/IPlayer";
-import {useGameStateIndex} from "../store/features/gameSlice/useGameStateIndex";
-import {useWhoIsTurn} from "../store/features/gameSlice/useWhoIsTurn";
+import {ICard} from "../../interfaces/ICard";
+import {IPlayer} from "../../interfaces/IPlayer";
+import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
+import {useWhoIsTurn} from "../../store/features/gameSlice/useWhoIsTurn";
+import {useGameRules} from "./useGameRules";
+import {usePlayerStateIndex} from "../../store/features/playersSlice/usePlayerStateIndex";
 
-export function GamePage() {
+
+export function GameComponent() {
     const navigate = useNavigate();
     const location = useLocation();
     const yourName = location.state.yourName;
-    const numOfPlayers = location.state.numOfPlayers
-
-    const dispatch = useAppDispatch();
-    const whoIsTurnFun = useWhoIsTurn();
-
-    const {gameState, gameStateFun} = useGameStateIndex();
-    const {whoIsTurn, deck} = gameState;
-    const {startGame, addToDeck} = gameStateFun;
-
-    const currentPlayer = useAppSelector(state => state.playersSlice);
+    const numOfPlayers = location.state.numOfPlayers;
 
     const {players, cards} = usePlayersCards(yourName, numOfPlayers);
+
+    ///// PLAYER STATE /////
+    const {playerState, playerStateFun} = usePlayerStateIndex();
+    const currentPlayer = playerState;
+    const {initPlayers} = playerStateFun;
+
+    ///// GAME STATE //////
+    const {gameState, gameStateFun} = useGameStateIndex();
+    const {whoIsTurn, deck, gameIsOn} = gameState;
+    const {startGame, addToDeck} = gameStateFun;
+
+    const whoIsTurnFun = useWhoIsTurn();
+    const gameRules = useGameRules();
 
     const [isFirstRound, setIsFirstRound] = useState(true);
     const [playersList, setPlayersList] = useState<IPlayer[]>([]);
     const [showStartGameButton, setShowStartGameButton] = useState(true);
+
+    const handleStartGame = (): void => {
+        setShowStartGameButton(false);
+        const card: ICard = getCard(cards);
+        startGame();
+        addToDeck(card);
+    };
 
     const handleTurn = useCallback(() => {
             setPlayersList((prevPlayersList) => {
@@ -46,36 +57,43 @@ export function GamePage() {
         }
         , [whoIsTurn, isFirstRound, playersList.length]);
 
+// who is turning
     useEffect(() => {
         whoIsTurnFun(numOfPlayers, isFirstRound);
         isFirstRound && setIsFirstRound(false);
     }, []);
 
+// log who and current
     useEffect(() => {
-        console.log(whoIsTurn);
+        //console.log(whoIsTurn);
         console.log(currentPlayer);
     }, [whoIsTurn, currentPlayer]);
 
+// setPlayersList(players);
     useEffect(() => {
         setPlayersList(players);
     }, [currentPlayer, players]);
 
+// initPlayers(playersList[whoIsTurn]);
     useEffect(() => {
-            dispatch(initPlayers(playersList[whoIsTurn]));
-        },
-        [playersList, whoIsTurn]);
+            initPlayers(playersList[whoIsTurn]);
+        }, [playersList, whoIsTurn]);
 
+// update current player to playersList
     useEffect(() => {
         playersList[whoIsTurn] = currentPlayer;
         setPlayersList([...playersList]);
     }, [currentPlayer]);
 
-    const handleStartGame = (): void => {
-        setShowStartGameButton(false);
-        const card: ICard = getCard(cards);
-        startGame();
-        addToDeck(card);
-    };
+    useEffect(() => {
+        console.log(deck)
+    }, [gameState]);
+
+
+    useEffect(() => {
+        gameRules(deck, playersList[whoIsTurn].playerCards);
+    }, [deck.length, currentPlayer.playerCards.length, whoIsTurn, gameIsOn]);
+
 
     return (
         <GamePageContainer>

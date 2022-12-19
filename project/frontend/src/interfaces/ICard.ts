@@ -1,6 +1,7 @@
 export interface ICard {
     symbol: string;
     num: number | string;
+    cardRule?:boolean;
 }
 
 export interface ICardCompInterface {
@@ -8,5 +9,5 @@ export interface ICardCompInterface {
     card:ICard;
     src:string;
     alt:string;
-    playerIndex :number;
+    playerIndex:number;
 }

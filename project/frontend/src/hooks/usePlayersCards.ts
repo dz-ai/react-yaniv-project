@@ -24,10 +24,13 @@ function createCards(): Promise<ICard[]> {
     const symbols = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     const num = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
 
-    const cards: ICard[] = [{symbol: 'Jokers', num: 'Joker_1'}, {symbol: 'Jokers', num: 'Joker_2'}];
+    const cards: ICard[] = [
+        {symbol: 'Jokers', num: 'Joker_1', cardRule: false},
+        {symbol: 'Jokers', num: 'Joker_2', cardRule: false}
+    ];
 
     symbols.forEach(symbol => {
-        num.forEach(num => cards.push({symbol, num}))
+        num.forEach(num => cards.push({symbol, num, cardRule: false}))
     });
 
     for (let i = 0; i < 7000; i++) {

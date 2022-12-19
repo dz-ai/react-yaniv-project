@@ -32,10 +32,18 @@ const gameSlice = createSlice({
         turnChange: (state, action: PayloadAction<number>) => {
             state.whoIsTurn = action.payload;
         },
+        changeDeckCardRule:
+            (state, action:PayloadAction<ICard[]>) => {
+                console.log('run')
+                return {
+                    ...state,
+                    deck: action.payload,
+                }
+        }
     },
 });
 
-export const {startGame,addToDeck, takeFromDeck, turnChange} = gameSlice.actions;
+export const {startGame,addToDeck, takeFromDeck, turnChange, changeDeckCardRule} = gameSlice.actions;
 
 export default gameSlice.reducer;
 

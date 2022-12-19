@@ -1,6 +1,6 @@
 import {ICardCompInterface} from "../../interfaces/ICard";
 import {CardStyleHover, CardStyleHoriz, CardStyle} from "./cardStyleHover";
-import {useDeliverCard} from "../../store/features/hooks/useDeliverCard";
+import {useDeliverCard} from "./useDeliverCard";
 import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
 
 export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCompInterface) {
@@ -20,7 +20,7 @@ export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCo
     if (playerIndex % 2 !== 0) {
         return <CardStyleHoriz src={src} alt={alt}/>
     } else {
-        if (gameState.gameIsOn && isYourTurn) {
+        if (gameState.gameIsOn && isYourTurn && card.cardRule) {
             return <CardStyleHover
                 playerIndex={playerIndex}
                 onClick={handleClick}

@@ -18,7 +18,7 @@ export function Player({player, isYou, playerIndex}: IPlayerComponent) {
                             src={`../../cardsImages/${card.symbol}/${card.num}.png`}
                             alt="your cards"
                             playerIndex={playerIndex}
-                            key={index}
+                            key={`${card.symbol}${card.num}`}
                         />
                         :
                         <CardComponent
@@ -27,7 +27,7 @@ export function Player({player, isYou, playerIndex}: IPlayerComponent) {
                             src={playerIndex % 2 !== 0 ? '../../cardsImages/backCardHori.png' : '../../cardsImages/Peter River.png'}
                             alt="others cards"
                             playerIndex={playerIndex}
-                            key={index}
+                            key={`${card.symbol}${card.num}`}
                         />
                 )
             }

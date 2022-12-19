@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Container, ContainerRow} from "../globalStyle/globalStyle";
+import {Container, ContainerRow} from "../../globalStyle/globalStyle";
 
 export const GamePageContainer = styled(Container)`
   background: green;
