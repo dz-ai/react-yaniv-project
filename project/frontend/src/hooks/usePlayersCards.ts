@@ -2,6 +2,7 @@ import {ICard} from "../interfaces/ICard";
 import {IPlayer} from "../interfaces/IPlayer";
 import {v4 as uuidv4} from 'uuid';
 import {useEffect, useState} from "react";
+import {CARDS} from "../../../test";
 
 export const usePlayersCards = (yourName:string, numOfPlayers:number) => {
     const [cards, setCards] = useState<ICard[]>([]);
@@ -22,12 +23,15 @@ export const usePlayersCards = (yourName:string, numOfPlayers:number) => {
 
 function createCards(): Promise<ICard[]> {
     const symbols = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-    const num = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
+    const num = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-    const cards: ICard[] = [{symbol: 'Jokers', num: 'Joker_1'}, {symbol: 'Jokers', num: 'Joker_2'}];
+    const cards: ICard[] = [
+        {symbol: 'Jokers', num: 'Joker_1', cardRule: false},
+        {symbol: 'Jokers', num: 'Joker_2', cardRule: false}
+    ];
 
     symbols.forEach(symbol => {
-        num.forEach(num => cards.push({symbol, num}))
+        num.forEach(num => cards.push({symbol, num, cardRule: false}))
     });
 
     for (let i = 0; i < 7000; i++) {
@@ -56,7 +60,7 @@ function setPlayersNames(
                     playerName: i === 0 ? yourName : results[i],
                     playerScore: 0,
                     isYourTurn: false,
-                    playerCards: [getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)],
+                    playerCards: [...CARDS]/*[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)]*/,
                 });
             };
             setPlayers(players);

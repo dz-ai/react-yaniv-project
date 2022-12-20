@@ -1,7 +1,7 @@
 import './App.css'
 import {OpenGamePage} from "./pages/openGamePage";
 import {createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider, Routes} from "react-router-dom";
-import {GamePage} from "./pages/gamePage";
+import {GameComponent} from "./components/gameComponent/gameComponent";
 import ErrorPage from "./pages/errorPage";
 
 
@@ -14,7 +14,7 @@ function App() {
             />
             <Route
             path="/gamePage"
-            element={<GamePage/>}
+            element={<GameComponent/>}
             />
         </Route>
     ));

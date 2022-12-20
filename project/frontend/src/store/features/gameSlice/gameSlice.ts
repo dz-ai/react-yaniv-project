@@ -5,12 +5,14 @@ interface GameState {
     gameIsOn: boolean;
     deck: ICard[];
     whoIsTurn: number;
+    throwCount: number;
 }
 
 const initialState: GameState = {
     gameIsOn: false,
     deck: [],
     whoIsTurn: 0,
+    throwCount: 0,
 };
 
 const gameSlice = createSlice({
@@ -21,7 +23,13 @@ const gameSlice = createSlice({
             state.gameIsOn = true;
         },
         addToDeck: (state, action: PayloadAction<ICard>) => {
-            state.deck.push(action.payload);
+            let card;
+            if (!state.gameIsOn) {
+                card = {...action.payload, cardRule: true, deckCard: true};
+            } else {
+                card = {...action.payload, cardRule: false, deckCard: true};
+            }
+            state.deck.push(card);
         },
         takeFromDeck: (state, action: PayloadAction<ICard>) => {
             const card = action.payload;
@@ -31,11 +39,34 @@ const gameSlice = createSlice({
         },
         turnChange: (state, action: PayloadAction<number>) => {
             state.whoIsTurn = action.payload;
+            state.deck = [...state.deck.map
+                                        (card => {
+                                            if (card.deckCard) {
+                                                return {...card, cardRule: true, deckCard: false}
+                                            } else {
+                                                return {symbol: '', num: ''}
+                                            }
+                                        })];
+
+        },
+        changeDeckCardRule:
+            (state, action:PayloadAction<ICard[]>) => {
+                return {
+                    ...state,
+                    deck: action.payload,
+                }
+        },
+        throwCountUp: (state, action:PayloadAction<number | undefined>) => {
+            if (action.payload !== undefined) {
+                state.throwCount = action.payload;
+            } else {
+                state.throwCount = state.throwCount + 1;
+            }
         },
     },
 });
 
-export const {startGame,addToDeck, takeFromDeck, turnChange} = gameSlice.actions;
+export const {startGame,addToDeck, takeFromDeck, turnChange, changeDeckCardRule, throwCountUp} = gameSlice.actions;
 
 export default gameSlice.reducer;
 
