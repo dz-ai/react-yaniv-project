@@ -32,7 +32,6 @@ const playersSlice = createSlice({
         },
         takeFromPlayerCard: (state, action: PayloadAction<ICard>) => {
             const card = action.payload;
-            console.log(card)
             state.playerCards = [...state.playerCards]
                 .filter(cardFilter => {
                     if (cardFilter.num !== card.num || cardFilter.symbol !== card.symbol) {
@@ -41,7 +40,6 @@ const playersSlice = createSlice({
                 });
         },
         addToPlayer: (state, action: PayloadAction<ICard>) => {
-            console.log('addToPlayer', action.payload)
             state.playerCards.push(action.payload);
         },
         changeCardRule: (state, action: PayloadAction<ICard[]>) => {

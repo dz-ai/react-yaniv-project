@@ -5,13 +5,15 @@ import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateInde
 
 export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCompInterface) {
     const {fromPlayerToDeck, fromDeckToPlayer} = useDeliverCard();
-    const {gameState} = useGameStateIndex();
+    const {gameState, gameStateFun} = useGameStateIndex();
+    const {throwCountUp} = gameStateFun;
 
     const handleClick = () => {
         // if > 4 it comes from deck else it is from player
         if (playerIndex > 4) {
             fromDeckToPlayer(card);
         } else {
+            throwCountUp();
             fromPlayerToDeck(card);
         }
     };
@@ -33,4 +35,4 @@ export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCo
                 alt={alt}/>;
         }
     }
-};
+}

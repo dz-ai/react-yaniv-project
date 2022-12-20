@@ -2,6 +2,7 @@ export interface ICard {
     symbol: string;
     num: number | string;
     cardRule?:boolean;
+    deckCard?:boolean;
 }
 
 export interface ICardCompInterface {

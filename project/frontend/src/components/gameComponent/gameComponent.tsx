@@ -10,6 +10,7 @@ import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateInde
 import {useWhoIsTurn} from "../../store/features/gameSlice/useWhoIsTurn";
 import {useGameRules} from "./useGameRules";
 import {usePlayerStateIndex} from "../../store/features/playersSlice/usePlayerStateIndex";
+import {numToStringConvertor} from "../../hooks/utilsFun";
 
 
 export function GameComponent() {
@@ -27,8 +28,8 @@ export function GameComponent() {
 
     ///// GAME STATE //////
     const {gameState, gameStateFun} = useGameStateIndex();
-    const {whoIsTurn, deck, gameIsOn} = gameState;
-    const {startGame, addToDeck} = gameStateFun;
+    const {whoIsTurn, deck, gameIsOn, throwCount} = gameState;
+    const {startGame, addToDeck, throwCountUp} = gameStateFun;
 
     const whoIsTurnFun = useWhoIsTurn();
     const gameRules = useGameRules();
@@ -38,13 +39,18 @@ export function GameComponent() {
     const [showStartGameButton, setShowStartGameButton] = useState(true);
 
     const handleStartGame = (): void => {
+        //throwCountUp(0);
         setShowStartGameButton(false);
+
         const card: ICard = getCard(cards);
+
         startGame();
         addToDeck(card);
     };
 
     const handleTurn = useCallback(() => {
+            throwCountUp(0);
+
             setPlayersList((prevPlayersList) => {
                 prevPlayersList[whoIsTurn] = {
                     ...prevPlayersList[whoIsTurn],
@@ -65,7 +71,7 @@ export function GameComponent() {
 
 // log who and current
     useEffect(() => {
-        //console.log(whoIsTurn);
+        console.log(throwCount);
         console.log(currentPlayer);
     }, [whoIsTurn, currentPlayer]);
 
@@ -83,16 +89,13 @@ export function GameComponent() {
     useEffect(() => {
         playersList[whoIsTurn] = currentPlayer;
         setPlayersList([...playersList]);
-    }, [currentPlayer]);
-
-    useEffect(() => {
-        console.log(deck)
-    }, [gameState]);
-
+    }, [currentPlayer, currentPlayer.playerCards, currentPlayer.playerCards.length]);
 
     useEffect(() => {
         gameRules(deck, playersList[whoIsTurn].playerCards);
     }, [deck.length, currentPlayer.playerCards.length, whoIsTurn, gameIsOn]);
+
+
 
 
     return (
@@ -118,11 +121,12 @@ export function GameComponent() {
                         {showStartGameButton && <button onClick={handleStartGame}>Start Game</button>}
                         {!showStartGameButton &&
                             deck.map(card =>
+                               card.symbol !== '' && card.num !== '' &&
                                 <CardComponent
                                     isYourTurn={whoIsTurn === 0}
                                     card={card}
                                     key={`${card.num}${card.symbol}`}
-                                    src={`../../cardsImages/${card.symbol}/${card.num}.png`}
+                                    src={`../../cardsImages/${card.symbol}/${numToStringConvertor(card.num)}.png`}
                                     alt={'deck cards'}
                                     playerIndex={6}/>)
                         }
@@ -140,4 +144,4 @@ export function GameComponent() {
 
         </GamePageContainer>
     );
-};
+}

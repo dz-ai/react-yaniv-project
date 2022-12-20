@@ -2,6 +2,7 @@ import {ICard} from "../interfaces/ICard";
 import {IPlayer} from "../interfaces/IPlayer";
 import {v4 as uuidv4} from 'uuid';
 import {useEffect, useState} from "react";
+import {CARDS} from "../../../test";
 
 export const usePlayersCards = (yourName:string, numOfPlayers:number) => {
     const [cards, setCards] = useState<ICard[]>([]);
@@ -22,7 +23,7 @@ export const usePlayersCards = (yourName:string, numOfPlayers:number) => {
 
 function createCards(): Promise<ICard[]> {
     const symbols = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-    const num = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
+    const num = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
     const cards: ICard[] = [
         {symbol: 'Jokers', num: 'Joker_1', cardRule: false},
@@ -59,7 +60,7 @@ function setPlayersNames(
                     playerName: i === 0 ? yourName : results[i],
                     playerScore: 0,
                     isYourTurn: false,
-                    playerCards: [getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)],
+                    playerCards: [...CARDS]/*[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)]*/,
                 });
             };
             setPlayers(players);
