@@ -4,8 +4,8 @@ export let CARDS:ICard[] = [
     {num: 1, symbol: 'Clubs'},
     {num: 2, symbol: 'Clubs'},
     {num: 3, symbol: 'Clubs'},
-    {num: 7, symbol: 'Hearts'},
-    {num: 1, symbol: 'Diamonds'}
+    {num: 7, symbol: 'Clubs'},
+    {num: 7, symbol: 'Diamonds'}
 ]
 
 // function possibleCombinations(cards: ICard[]): ICard[] {

@@ -1,6 +1,6 @@
 import {ICardCompInterface} from "../../interfaces/ICard";
 import {CardStyleHover, CardStyleHoriz, CardStyle} from "./cardStyleHover";
-import {useDeliverCard} from "./useDeliverCard";
+import {useDeliverCard} from "../../Hooks-and-Util/useDeliverCard";
 import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
 
 export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCompInterface) {

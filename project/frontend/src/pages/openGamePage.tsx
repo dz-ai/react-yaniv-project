@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {handleKeypress} from "../hooks/utilsFun";
+import {handleKeypress} from "../Hooks-and-Util/utilsFun";
 import {OpenGameContainer} from "./OpenGamePageStyle";
 
 export function OpenGamePage() {

@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {useGameStateIndex} from "./useGameStateIndex";
+import {useGameStateIndex} from "../store/features/gameSlice/useGameStateIndex";
 
 type whoIsTurnFun = (playersArrLength: number, isFirstRound: boolean) => void;
 export function useWhoIsTurn():whoIsTurnFun {

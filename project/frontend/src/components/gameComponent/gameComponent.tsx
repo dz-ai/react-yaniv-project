@@ -1,4 +1,4 @@
-import {getCard, usePlayersCards} from "../../hooks/usePlayersCards";
+import {getCard, usePlayersCardsCreator} from "../../Hooks-and-Util/usePlayersCardsCreator";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {Player} from "../player/player";
@@ -7,10 +7,10 @@ import {GamePageContainer, MainGameContainer, UpAndDownPlayersCont, SideCont, De
 import {ICard} from "../../interfaces/ICard";
 import {IPlayer} from "../../interfaces/IPlayer";
 import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
-import {useWhoIsTurn} from "../../store/features/gameSlice/useWhoIsTurn";
-import {useGameRules} from "./useGameRules";
+import {useWhoIsTurn} from "../../Hooks-and-Util/useWhoIsTurn";
+import {useGameRules} from "../../Hooks-and-Util/useGameRules";
 import {usePlayerStateIndex} from "../../store/features/playersSlice/usePlayerStateIndex";
-import {numToStringConvertor} from "../../hooks/utilsFun";
+import {numToStringConvertor} from "../../Hooks-and-Util/utilsFun";
 
 
 export function GameComponent() {
@@ -19,7 +19,7 @@ export function GameComponent() {
     const yourName = location.state.yourName;
     const numOfPlayers = location.state.numOfPlayers;
 
-    const {players, cards} = usePlayersCards(yourName, numOfPlayers);
+    const {players, cards} = usePlayersCardsCreator(yourName, numOfPlayers);
 
     ///// PLAYER STATE /////
     const {playerState, playerStateFun} = usePlayerStateIndex();
@@ -44,8 +44,8 @@ export function GameComponent() {
 
         const card: ICard = getCard(cards);
 
-        startGame();
         addToDeck(card);
+        startGame();
     };
 
     const handleTurn = useCallback(() => {
@@ -71,9 +71,9 @@ export function GameComponent() {
 
 // log who and current
     useEffect(() => {
-        console.log(throwCount);
+        console.log(deck);
         console.log(currentPlayer);
-    }, [whoIsTurn, currentPlayer]);
+    }, [whoIsTurn, currentPlayer, deck]);
 
 // setPlayersList(players);
     useEffect(() => {
@@ -82,8 +82,8 @@ export function GameComponent() {
 
 // initPlayers(playersList[whoIsTurn]);
     useEffect(() => {
-            initPlayers(playersList[whoIsTurn]);
-        }, [playersList, whoIsTurn]);
+        initPlayers(playersList[whoIsTurn]);
+    }, [playersList, whoIsTurn]);
 
 // update current player to playersList
     useEffect(() => {
@@ -93,9 +93,7 @@ export function GameComponent() {
 
     useEffect(() => {
         gameRules(deck, playersList[whoIsTurn].playerCards);
-    }, [deck.length, currentPlayer.playerCards.length, whoIsTurn, gameIsOn]);
-
-
+    }, [currentPlayer.playerCards.length, whoIsTurn, gameIsOn]);
 
 
     return (
@@ -118,10 +116,15 @@ export function GameComponent() {
                     </div>
                     {/* TODO make it to a separate component*/}
                     <Deck>
-                        {showStartGameButton && <button onClick={handleStartGame}>Start Game</button>}
+                        {showStartGameButton &&
+                            <button
+                                onClick={handleStartGame}
+                                disabled={players.length === 0}>
+                                Start Game
+                            </button>}
                         {!showStartGameButton &&
                             deck.map(card =>
-                               card.symbol !== '' && card.num !== '' &&
+                                card.symbol !== '' && card.num !== '' &&
                                 <CardComponent
                                     isYourTurn={whoIsTurn === 0}
                                     card={card}

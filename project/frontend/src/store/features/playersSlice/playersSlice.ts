@@ -40,7 +40,9 @@ const playersSlice = createSlice({
                 });
         },
         addToPlayer: (state, action: PayloadAction<ICard>) => {
-            state.playerCards.push(action.payload);
+            let card = action.payload;
+            card = {...card ,cardRule: false, deckCard: true};
+            state.playerCards.push(card);
         },
         changeCardRule: (state, action: PayloadAction<ICard[]>) => {
 

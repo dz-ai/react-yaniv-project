@@ -2,7 +2,7 @@ import {ICard} from "../../interfaces/ICard";
 import {IPlayerComponent} from "../../interfaces/IPlayer";
 import {CardComponent} from "../card/card";
 import React from "react";
-import {numToStringConvertor} from "../../hooks/utilsFun";
+import {numToStringConvertor} from "../../Hooks-and-Util/utilsFun";
 
 
 export function Player({player, isYou, playerIndex}: IPlayerComponent) {
