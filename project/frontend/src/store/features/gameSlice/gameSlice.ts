@@ -47,10 +47,12 @@ const gameSlice = createSlice({
             })];
 
             state.deck = [...state.deck.map((card, index) => {
-                if (index !== 0 || index !== state.deck.length - 1) {
-                    return {...card, cardRule: false, deckCard: false}
+                if (index !== 0 && index !== state.deck.length - 1) {
+                    console.log('!==', index, state.deck.length)
+                    return {...card, cardRule: false, deckCard: false};
                 } else {
-                    return {...card, cardRule: true, deckCard: false}
+                    console.log('===', index, state.deck.length)
+                    return {...card, cardRule: true, deckCard: false};
                 }
             })];
 

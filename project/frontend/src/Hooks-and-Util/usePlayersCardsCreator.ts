@@ -60,7 +60,7 @@ function setPlayersNames(
                     playerName: i === 0 ? yourName : results[i],
                     playerScore: 0,
                     isYourTurn: false,
-                    playerCards: [...CARDS]/*/!*[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)*!/]*/,
+                    playerCards: /*[...CARDS]*/[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)],
                 });
             };
             setPlayers(players);
