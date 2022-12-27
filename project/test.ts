@@ -5,5 +5,5 @@ export let CARDS:ICard[] = [
     {num: 2, symbol: 'Clubs'},
     {num: 3, symbol: 'Clubs'},
     {num: 4, symbol: 'Diamonds'},
-    {num: 4, symbol: 'Hearts'},
+    {num: 1, symbol: 'Spades'},
 ]

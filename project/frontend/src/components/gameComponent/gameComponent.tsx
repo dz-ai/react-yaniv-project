@@ -27,7 +27,7 @@ export function GameComponent() {
 
     ///// GAME STATE //////
     const {gameState, gameStateFun} = useGameStateIndex();
-    const {whoIsTurn, deck, gameIsOn, throwCount} = gameState;
+    const {whoIsTurn, deck, gameIsOn} = gameState;
     const {startGame, addToDeck, throwCountUp} = gameStateFun;
 
     //// GAME MOVEMENTS ////
@@ -35,9 +35,10 @@ export function GameComponent() {
     const gameRules = useGameRules();
 
     ///// LOCAL STATES /////
-    const [isFirstRound, setIsFirstRound] = useState(true);
+    const [isFirstRound, setIsFirstRound] = useState<boolean>(true);
     const [playersList, setPlayersList] = useState<IPlayer[]>([]);
     const [showStartGameButton, setShowStartGameButton] = useState<boolean>(true);
+    const [disableCacheButton, setDisableCacheButton] = useState<boolean>(false);
 
     /// LOGIC ///
     const handleStartGame = (): void => {
@@ -45,7 +46,7 @@ export function GameComponent() {
 
         const card: ICard = getCard(cards);
 
-        addToDeck({symbol: 'Clubs', num: 1});
+        addToDeck(card);
         startGame();
     };
 
@@ -61,10 +62,12 @@ export function GameComponent() {
             });
             whoIsTurnFun(playersList.length, isFirstRound);
             isFirstRound && setIsFirstRound(false);
-        }
-        , [whoIsTurn, isFirstRound, playersList.length]);
+
+        }, [whoIsTurn, isFirstRound, playersList.length]);
 
     const handleCacheButton = (): void => {
+        setDisableCacheButton(false);
+
         const card: ICard = getCard(cards);
         console.log(card)
         addToPlayer(card);
@@ -79,6 +82,12 @@ export function GameComponent() {
         whoIsTurnFun(numOfPlayers, isFirstRound);
         isFirstRound && setIsFirstRound(false);
     }, []);
+
+    useEffect(() => {
+       if (whoIsTurn === 0) {
+           setDisableCacheButton(true);
+       }
+    }, [whoIsTurn]);
 
 // log who and current
     useEffect(() => {
@@ -101,7 +110,7 @@ export function GameComponent() {
         playersList[whoIsTurn] = currentPlayer;
         setPlayersList([...playersList]);
     }, [currentPlayer, currentPlayer.playerCards, currentPlayer.playerCards.length]);
-
+// update each card rule according to cards situation
     useEffect(() => {
         gameRules(deck, playersList[whoIsTurn].playerCards);
     }, [currentPlayer.playerCards.length, whoIsTurn, gameIsOn]);
@@ -140,7 +149,9 @@ export function GameComponent() {
                                 player={playersList[0]}
                                 isYou={true} playerIndex={0}
                                 whoIsTurn={whoIsTurn}
-                                handleCacheButton={handleCacheButton}/>}
+                                handleCacheButton={handleCacheButton}
+                                disableCacheButton={disableCacheButton}
+                            />}
                     </div>
                 </UpAndDownPlayersCont>
 

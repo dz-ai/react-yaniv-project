@@ -51,10 +51,13 @@ function possibleCombinations(cards: ICard[],
     let deckIn2: ICard;
     if (deck && deck.length > 0) {
         deckIn = deck[deck.length - 1];
-        deckIn2 = deck[deck.length - 2];
     } else {
         deckIn = {symbol: '', num: ''};
-        deckIn2 = {symbol: '', num: ''};
+    }
+    if (deck && deck.length > 1) {
+        deckIn2 = deck[deck.length - 2];
+    } else {
+        deckIn2 = {symbol: '', num: '', deckCard: false};
     }
 
     //  threesome sequence tester //
