@@ -2,15 +2,14 @@ import {getCard, usePlayersCardsCreator} from "../../Hooks-and-Util/usePlayersCa
 import {useLocation, useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {Player} from "../player/player";
-import {CardComponent} from "../card/card";
-import {GamePageContainer, MainGameContainer, UpAndDownPlayersCont, SideCont, Deck} from "./gamePageStyle";
+import {GamePageContainer, MainGameContainer, UpAndDownPlayersCont, SideCont} from "./gamePageStyle";
 import {ICard} from "../../interfaces/ICard";
 import {IPlayer} from "../../interfaces/IPlayer";
 import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
 import {useWhoIsTurn} from "../../Hooks-and-Util/useWhoIsTurn";
 import {useGameRules} from "../../Hooks-and-Util/useGameRules";
 import {usePlayerStateIndex} from "../../store/features/playersSlice/usePlayerStateIndex";
-import {numToStringConvertor} from "../../Hooks-and-Util/utilsFun";
+import {Deck} from "../deck/Deck";
 
 
 export function GameComponent() {
@@ -24,22 +23,24 @@ export function GameComponent() {
     ///// PLAYER STATE /////
     const {playerState, playerStateFun} = usePlayerStateIndex();
     const currentPlayer = playerState;
-    const {initPlayers} = playerStateFun;
+    const {initPlayers, addToPlayer} = playerStateFun;
 
     ///// GAME STATE //////
     const {gameState, gameStateFun} = useGameStateIndex();
     const {whoIsTurn, deck, gameIsOn, throwCount} = gameState;
     const {startGame, addToDeck, throwCountUp} = gameStateFun;
 
+    //// GAME MOVEMENTS ////
     const whoIsTurnFun = useWhoIsTurn();
     const gameRules = useGameRules();
 
+    ///// LOCAL STATES /////
     const [isFirstRound, setIsFirstRound] = useState(true);
     const [playersList, setPlayersList] = useState<IPlayer[]>([]);
-    const [showStartGameButton, setShowStartGameButton] = useState(true);
+    const [showStartGameButton, setShowStartGameButton] = useState<boolean>(true);
 
+    /// LOGIC ///
     const handleStartGame = (): void => {
-        //throwCountUp(0);
         setShowStartGameButton(false);
 
         const card: ICard = getCard(cards);
@@ -62,6 +63,15 @@ export function GameComponent() {
             isFirstRound && setIsFirstRound(false);
         }
         , [whoIsTurn, isFirstRound, playersList.length]);
+
+    const handleCacheButton = (): void => {
+        const card: ICard = getCard(cards);
+        console.log(card)
+        addToPlayer(card);
+        setTimeout(() => {
+            handleTurn();
+        }, 1000)
+    };
 
 // who is turning
     useEffect(() => {
@@ -114,29 +124,22 @@ export function GameComponent() {
                     <div>
                         {playersList[2] && <Player player={playersList[2]} isYou={false} playerIndex={2}/>}
                     </div>
-                    {/* TODO make it to a separate component*/}
-                    <Deck>
-                        {showStartGameButton &&
-                            <button
-                                onClick={handleStartGame}
-                                disabled={players.length === 0}>
-                                Start Game
-                            </button>}
-                        {!showStartGameButton &&
-                            deck.map(card =>
-                                card.symbol !== '' && card.num !== '' &&
-                                <CardComponent
-                                    isYourTurn={whoIsTurn === 0}
-                                    card={card}
-                                    key={`${card.num}${card.symbol}`}
-                                    src={`../../cardsImages/${card.symbol}/${numToStringConvertor(card.num)}.png`}
-                                    alt={'deck cards'}
-                                    playerIndex={6}/>)
-                        }
-                    </Deck>
+
+                    <Deck
+                        showStartGameButton={showStartGameButton}
+                        handleStartGame={handleStartGame}
+                        players={players}
+                        deck={deck}
+                        whoIsTurn={whoIsTurn}
+                    />
 
                     <div>
-                        {playersList[0] && <Player player={playersList[0]} isYou={true} playerIndex={0}/>}
+                        {playersList[0] &&
+                            <Player
+                                player={playersList[0]}
+                                isYou={true} playerIndex={0}
+                                whoIsTurn={whoIsTurn}
+                                handleCacheButton={handleCacheButton}/>}
                     </div>
                 </UpAndDownPlayersCont>
 

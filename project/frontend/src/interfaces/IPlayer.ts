@@ -7,9 +7,3 @@ export interface IPlayer {
     isYourTurn: boolean;
     playerCards: ICard[];
 }
-
-export interface IPlayerComponent {
-    player: IPlayer;
-    isYou:boolean;
-    playerIndex:number;
-}

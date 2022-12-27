@@ -1,5 +1,5 @@
 import {ICard} from "../interfaces/ICard";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {useGameStateIndex} from "../store/features/gameSlice/useGameStateIndex";
 import {usePlayerStateIndex} from "../store/features/playersSlice/usePlayerStateIndex";
 
@@ -10,6 +10,8 @@ export function useGameRules(): gameRulesFunction {
     const {whoIsTurn, deck, throwCount} = gameState;
     const {playerStateFun} = usePlayerStateIndex();
     const {changeCardRule} = playerStateFun;
+
+    const [isASequenceSituation, setIsASequenceSituation] = useState<boolean>(false);
 
 
     return useMemo(() => (deckRule: ICard[], playersCardRule: ICard[]): void => {
@@ -25,7 +27,12 @@ export function useGameRules(): gameRulesFunction {
             changeCardRule(inPlayerArr);
 
         } else {
-            inPlayerArr = possibleCombinations(inPlayerArr, deck, throwCount);
+            inPlayerArr = possibleCombinations(
+                inPlayerArr,
+                isASequenceSituation,
+                setIsASequenceSituation,
+                deck, throwCount);
+
             changeCardRule(inPlayerArr);
         }
 
@@ -34,7 +41,11 @@ export function useGameRules(): gameRulesFunction {
 }
 
 
-function possibleCombinations(cards: ICard[], deck?: ICard[], throwCount?: number): ICard[] {
+function possibleCombinations(cards: ICard[],
+                              isASequenceSituation: boolean,
+                              setIsASequenceSituation: (arg: boolean) => void,
+                              deck?: ICard[],
+                              throwCount?: number): ICard[] {
 
     let deckIn;
     if (deck && deck.length > 0) {
@@ -44,7 +55,7 @@ function possibleCombinations(cards: ICard[], deck?: ICard[], throwCount?: numbe
     }
 
     //  threesome sequence tester //
-    const threesomeTest:(string | number)[] = [];
+    const threesomeTest: (string | number)[] = [];
 
 
     for (let i = 0; i < cards.length; i++) {
@@ -81,13 +92,16 @@ function possibleCombinations(cards: ICard[], deck?: ICard[], throwCount?: numbe
             });
 
         }
+                    console.log(threesomeTest, isASequenceSituation)
 
         //////// test for same number cards ////////
-        if (threesomeTest.length < 2 && cardsElement.num === deckIn.num || deckIn.symbol === 'Jokers') {
-            cards[i] = {...cards[i], cardRule: true};
+        if (threesomeTest.length < 2 &&
+            cardsElement.num === deckIn.num || deckIn.symbol === 'Jokers') {
+            !isASequenceSituation ? cards[i] = {...cards[i], cardRule: true} : null;
         }
-        if (threesomeTest.length > 1 && throwCount === 1 && cardsElement.num === deckIn.num || deckIn.symbol === 'Jokers') {
-            cards[i] = {...cards[i], cardRule: true};
+        if (threesomeTest.length > 1 &&
+            throwCount === 1 && cardsElement.num === deckIn.num || deckIn.symbol === 'Jokers') {
+            !isASequenceSituation ? cards[i] = {...cards[i], cardRule: true} : null;
         }
 
 
@@ -99,6 +113,7 @@ function possibleCombinations(cards: ICard[], deck?: ICard[], throwCount?: numbe
         threesomeTest.forEach(indexNum => {
             if (typeof indexNum === 'number') {
                 cards[indexNum] = {...cards[indexNum], cardRule: true}
+                setIsASequenceSituation(true);
             }
         })
     }
