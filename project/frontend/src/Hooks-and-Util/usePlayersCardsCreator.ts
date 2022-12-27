@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 import {useEffect, useState} from "react";
 import {CARDS} from "../../../test";
 
-export const usePlayersCards = (yourName:string, numOfPlayers:number) => {
+export const usePlayersCardsCreator = (yourName:string, numOfPlayers:number) => {
     const [cards, setCards] = useState<ICard[]>([]);
     const [players, setPlayers] = useState<IPlayer[]>([]);
 
@@ -31,7 +31,7 @@ function createCards(): Promise<ICard[]> {
     ];
 
     symbols.forEach(symbol => {
-        num.forEach(num => cards.push({symbol, num, cardRule: false}))
+        num.forEach(num => cards.push({symbol, num, cardRule: true}))
     });
 
     for (let i = 0; i < 7000; i++) {
@@ -60,7 +60,7 @@ function setPlayersNames(
                     playerName: i === 0 ? yourName : results[i],
                     playerScore: 0,
                     isYourTurn: false,
-                    playerCards: [...CARDS]/*[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)]*/,
+                    playerCards: [...CARDS]/*/!*[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)*!/]*/,
                 });
             };
             setPlayers(players);

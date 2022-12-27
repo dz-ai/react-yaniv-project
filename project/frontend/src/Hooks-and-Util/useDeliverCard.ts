@@ -1,8 +1,8 @@
-import {AppDispatch} from "../../store/store";
-import {ICard} from "../../interfaces/ICard";
+import {AppDispatch} from "../store/store";
+import {ICard} from "../interfaces/ICard";
 import {useState} from "react";
-import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
-import {usePlayerStateIndex} from "../../store/features/playersSlice/usePlayerStateIndex";
+import {useGameStateIndex} from "../store/features/gameSlice/useGameStateIndex";
+import {usePlayerStateIndex} from "../store/features/playersSlice/usePlayerStateIndex";
 
 interface IDeliverFun {
     fromPlayerToDeck:(card:ICard) => AppDispatch;

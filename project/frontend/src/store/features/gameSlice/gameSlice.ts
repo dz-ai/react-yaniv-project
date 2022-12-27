@@ -25,7 +25,7 @@ const gameSlice = createSlice({
         addToDeck: (state, action: PayloadAction<ICard>) => {
             let card;
             if (!state.gameIsOn) {
-                card = {...action.payload, cardRule: true, deckCard: true};
+                card = {...action.payload, cardRule: true, deckCard: false};
             } else {
                 card = {...action.payload, cardRule: false, deckCard: true};
             }

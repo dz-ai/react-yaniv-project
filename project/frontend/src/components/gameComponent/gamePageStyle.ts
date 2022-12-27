@@ -23,6 +23,3 @@ export const SideCont = styled(Container)`
   width: 200px;
 `;
 
-export const Deck = styled(ContainerRow)`
-  
-`;

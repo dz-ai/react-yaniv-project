@@ -1,16 +1,32 @@
 import {ICard} from "../../interfaces/ICard";
-import {IPlayerComponent} from "../../interfaces/IPlayer";
+import {IPlayer} from "../../interfaces/IPlayer";
 import {CardComponent} from "../card/card";
 import React from "react";
-import {numToStringConvertor} from "../../hooks/utilsFun";
+import {numToStringConvertor} from "../../Hooks-and-Util/utilsFun";
+import {CacheButtonStyle, PlayerStyle} from "./playerStyle";
 
+interface IPlayerComponent {
+    player: IPlayer;
+    isYou: boolean;
+    playerIndex: number;
+    whoIsTurn?: number;
+    handleCacheButton?: () => void;
+}
 
-export function Player({player, isYou, playerIndex}: IPlayerComponent) {
+export function Player({player, isYou, playerIndex, whoIsTurn, handleCacheButton}: IPlayerComponent) {
     return (
-        <>
+        <PlayerStyle isYou={isYou}>
+
             <p>{player.playerName}</p>
+
+            <CacheButtonStyle
+                disabled={whoIsTurn !== 0}
+                onClick={handleCacheButton}>
+                Cache
+            </CacheButtonStyle>
+
             {
-                player.playerCards.map((card: ICard, index: number) =>
+                player.playerCards.map((card: ICard) =>
                     isYou
                         ?
 
@@ -33,6 +49,6 @@ export function Player({player, isYou, playerIndex}: IPlayerComponent) {
                         />
                 )
             }
-        </>
+        </PlayerStyle>
     );
-};
+}
