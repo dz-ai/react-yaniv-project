@@ -47,11 +47,14 @@ function possibleCombinations(cards: ICard[],
                               deck?: ICard[],
                               throwCount?: number): ICard[] {
 
-    let deckIn;
+    let deckIn: ICard;
+    let deckIn2: ICard;
     if (deck && deck.length > 0) {
         deckIn = deck[deck.length - 1];
+        deckIn2 = deck[deck.length - 2];
     } else {
         deckIn = {symbol: '', num: ''};
+        deckIn2 = {symbol: '', num: ''};
     }
 
     //  threesome sequence tester //
@@ -70,29 +73,64 @@ function possibleCombinations(cards: ICard[],
         }
 
         //////// test for three same symbol with sequence ////////////
-        if (cardsElement.symbol === deckIn.symbol) {
+        if (cardsElement.symbol === deckIn.symbol || deckIn.symbol === 'Jokers') {
 
-            deck && deck.forEach((card) => {
-                if (card.deckCard &&
-                    cardsElement.num === card.num as number - 1 || cardsElement.num === card.num as number + 1) {
 
-                    console.log('+-1', i)
+            if (deckIn.symbol === 'Jokers') { /* if last card in deck is a Joker */
+
+                if (typeof cardsElement.num === 'number' /* and found that the next card in deck is in sequence too */
+                    && deckIn2.deckCard
+                    && cardsElement.num - 2 === deckIn2.num) {
+
+                    threesomeTest.push('');
                     threesomeTest.push('');
                     !threesomeTest.includes(i) && threesomeTest.push(i);
-                    console.log(threesomeTest)
+                } else { /* if not found sequence in deck we search in player's cards */
 
+                    cards.forEach((card, index) => {
+
+                        if (typeof card.num === 'number' &&
+                            card.symbol === cardsElement.symbol && card.num - 1 === cardsElement.num) {
+
+                            threesomeTest.push('');
+                            !threesomeTest.includes(i) && threesomeTest.push(i);
+                            !threesomeTest.includes(index) && threesomeTest.push(index);
+                        }
+                    });
                 }
-                if (card.deckCard &&
-                    cardsElement.num === card.num as number - 2 || cardsElement.num === card.num as number + 2) {
-                    console.log('+-2', i)
-                    threesomeTest.push('');
-                    !threesomeTest.includes(i) && threesomeTest.push(i);
-                    console.log(threesomeTest)
+
+            } else { /* if last card in deck is not a Joker */
+
+                if (typeof cardsElement.num === 'number'
+                    && cardsElement.num - 1 === deckIn.num) { /* if first card in deck is in sequence */
+
+
+                    if (deckIn2.deckCard && cardsElement.num - 2 === deckIn2.num) { /* if found that the next card in deck is in sequence too */
+                        threesomeTest.push('');
+                        threesomeTest.push('');
+                        !threesomeTest.includes(i) && threesomeTest.push(i);
+                    } else { /* if not found sequence in deck we search in player's cards */
+                        cards.forEach((card, index) => {
+
+                            if (typeof card.num === 'number' &&
+                                card.symbol === cardsElement.symbol && card.num - 1 === cardsElement.num) {
+
+                                    threesomeTest.push('');
+                                    !threesomeTest.includes(i) && threesomeTest.push(i);
+                                    !threesomeTest.includes(index) && threesomeTest.push(index);
+                            }
+                        });
+                    }
+                   //
                 }
-            });
+                //  end of not Joker condition
+            }
+            ///////   END OF CONDITIONS   ///////
 
         }
-                    console.log(threesomeTest, isASequenceSituation)
+        //////// END test for three same symbol with sequence END ////////////
+
+        console.log(threesomeTest, isASequenceSituation)
 
         //////// test for same number cards ////////
         if (threesomeTest.length < 2 &&

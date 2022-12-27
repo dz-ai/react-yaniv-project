@@ -3,6 +3,7 @@ import {CardStyleHover, CardStyleHoriz, CardStyle} from "./cardStyleHover";
 import {useDeliverCard} from "../../Hooks-and-Util/useDeliverCard";
 import {useGameStateIndex} from "../../store/features/gameSlice/useGameStateIndex";
 
+// TODO make position of more then 5 cards to be half hidden by the closest card
 export function CardComponent({isYourTurn, card, src, alt, playerIndex}: ICardCompInterface) {
     const {fromPlayerToDeck, fromDeckToPlayer} = useDeliverCard();
     const {gameState, gameStateFun} = useGameStateIndex();

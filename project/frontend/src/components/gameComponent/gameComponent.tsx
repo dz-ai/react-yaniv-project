@@ -45,7 +45,7 @@ export function GameComponent() {
 
         const card: ICard = getCard(cards);
 
-        addToDeck(card);
+        addToDeck({symbol: 'Clubs', num: 1});
         startGame();
     };
 
@@ -72,6 +72,7 @@ export function GameComponent() {
             handleTurn();
         }, 1000)
     };
+
 
 // who is turning
     useEffect(() => {
