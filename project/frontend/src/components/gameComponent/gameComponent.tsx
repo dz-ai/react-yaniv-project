@@ -47,6 +47,7 @@ export function GameComponent() {
         const card: ICard = getCard(cards);
 
         addToDeck(card);
+        //addToDeck({num: 1, symbol: 'Spades'});
         startGame();
     };
 
