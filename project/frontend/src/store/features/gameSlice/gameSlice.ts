@@ -39,24 +39,37 @@ const gameSlice = createSlice({
         },
         turnChange: (state, action: PayloadAction<number>) => {
             state.whoIsTurn = action.payload;
-            state.deck = [...state.deck.map
-                                        (card => {
-                                            if (card.deckCard) {
-                                                return {...card, cardRule: true, deckCard: false}
-                                            } else {
-                                                return {symbol: '', num: ''}
-                                            }
-                                        })];
+            state.deck = [...state.deck.filter
+            (card => {
+                if (card.deckCard) {
+                    return card;
+                }
+            })];
+
+            state.deck = [...state.deck.map((card) => {
+                return {...card, deckCard: false};
+            })];
+
+            state.deck = [...state.deck.map((card, index) => {
+
+                if (index !== 0 && index !== state.deck.length - 1) {
+                    return {...card, cardRule: false};
+                } else {
+                    console.log('===', index, state.deck.length)
+                    return {...card, cardRule: true};
+                }
+            })];
+
 
         },
         changeDeckCardRule:
-            (state, action:PayloadAction<ICard[]>) => {
+            (state, action: PayloadAction<ICard[]>) => {
                 return {
                     ...state,
                     deck: action.payload,
                 }
-        },
-        throwCountUp: (state, action:PayloadAction<number | undefined>) => {
+            },
+        throwCountUp: (state, action: PayloadAction<number | undefined>) => {
             if (action.payload !== undefined) {
                 state.throwCount = action.payload;
             } else {
@@ -66,7 +79,7 @@ const gameSlice = createSlice({
     },
 });
 
-export const {startGame,addToDeck, takeFromDeck, turnChange, changeDeckCardRule, throwCountUp} = gameSlice.actions;
+export const {startGame, addToDeck, takeFromDeck, turnChange, changeDeckCardRule, throwCountUp} = gameSlice.actions;
 
 export default gameSlice.reducer;
 

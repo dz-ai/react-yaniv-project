@@ -11,16 +11,17 @@ interface IPlayerComponent {
     playerIndex: number;
     whoIsTurn?: number;
     handleCacheButton?: () => void;
+    disableCacheButton?: boolean
 }
 
-export function Player({player, isYou, playerIndex, whoIsTurn, handleCacheButton}: IPlayerComponent) {
+export function Player({player, isYou, playerIndex, whoIsTurn, handleCacheButton, disableCacheButton}: IPlayerComponent) {
     return (
         <PlayerStyle isYou={isYou}>
 
             <p>{player.playerName}</p>
 
             <CacheButtonStyle
-                disabled={whoIsTurn !== 0}
+                disabled={whoIsTurn !== 0 || !disableCacheButton}
                 onClick={handleCacheButton}>
                 Cache
             </CacheButtonStyle>

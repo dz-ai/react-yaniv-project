@@ -55,12 +55,14 @@ function setPlayersNames(
             const players: IPlayer[] = [];
 
             for (let i = 0; i < numOfPlayers; i++) {
+                const playerCards = makeHand(cards);
+
                 players.push(<IPlayer>{
                     playerId: uuidv4(),
                     playerName: i === 0 ? yourName : results[i],
                     playerScore: 0,
                     isYourTurn: false,
-                    playerCards: [...CARDS]/*/!*[getCard(cards), getCard(cards), getCard(cards), getCard(cards), getCard(cards)*!/]*/,
+                    playerCards: /*[...CARDS]*/playerCards,
                 });
             };
             setPlayers(players);
@@ -77,4 +79,14 @@ export function getCard(cards: ICard[]): ICard {
         card = {symbol: '', num: ''}
         return  card
     }
+}
+
+function makeHand(cards:ICard[]):ICard[] {
+    const cardsOut:ICard[] = [];
+
+    for (let i=0; i < 5; i++) {
+        cardsOut.push(getCard(cards));
+    }
+
+    return cardsOut
 }

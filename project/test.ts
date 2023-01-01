@@ -1,9 +1,11 @@
 import {ICard} from "./frontend/src/interfaces/ICard";
 
 export let CARDS:ICard[] = [
-    {num: 1, symbol: 'Clubs'},
-    {num: 2, symbol: 'Clubs'},
-    {num: 3, symbol: 'Clubs'},
-    {num: 7, symbol: 'Clubs'},
-    {symbol: 'Jokers', num: 'Joker_1'}
+    {num: 3, symbol: 'Diamonds'},
+    {num: 3, symbol: 'Hearts'},
+    {num: 4, symbol: 'Diamonds'},
+    {num: 5, symbol: 'Diamonds'},
+    {num: 6, symbol: 'Diamonds'},
+    {symbol: 'Jokers', num: 'Joker_2', cardRule: false},
 ]
+//{symbol: 'Jokers', num: 'Joker_2', cardRule: false}

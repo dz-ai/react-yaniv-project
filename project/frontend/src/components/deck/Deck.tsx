@@ -31,7 +31,8 @@ export function Deck({showStartGameButton, handleStartGame, players, deck, whoIs
                             key={`${card.num}${card.symbol}`}
                             src={`../../cardsImages/${card.symbol}/${numToStringConvertor(card.num)}.png`}
                             alt={'deck cards'}
-                            playerIndex={6}/>)
+                            playerIndex={6}/>
+                    )
                 }
             </DeckStyle>
         </>

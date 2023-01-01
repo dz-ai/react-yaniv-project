@@ -20,6 +20,7 @@ const playersSlice = createSlice({
     initialState,
     reducers: {
         initPlayers: (state, action: PayloadAction<IPlayer>) => {
+
             if (action.payload) {
                 const {playerId, playerName, isYourTurn, playerCards, playerScore} = action.payload;
 
